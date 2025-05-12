@@ -1,105 +1,120 @@
+import { useState } from 'react';
 import {
+  Box,
   Container,
   Heading,
-  Text,
-  Box,
-  VStack,
-  Card,
-  CardBody,
-  CardHeader,
-  Button,
-  Progress,
-  Badge,
   SimpleGrid,
-  useColorModeValue
+  Text,
+  VStack,
+  HStack,
+  Badge,
+  Button,
+  Image,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { useToast } from '@chakra-ui/toast';
+import { Card, CardBody, CardFooter } from '@chakra-ui/card';
+import { Progress } from '@chakra-ui/progress';
+import { Divider } from '@chakra-ui/layout';
+import type { Exercise } from '../types';
+import { exercises } from '../data/exercises';
 
 const Exercises = () => {
-  // Datos de ejemplo para los ejercicios
-  const exercises = [
-    {
-      id: 1,
-      name: 'Flexiones',
-      description: '20 repeticiones',
-      difficulty: 'Fácil',
-      points: 10,
-      completed: false,
-    },
-    {
-      id: 2,
-      name: 'Sentadillas',
-      description: '30 repeticiones',
-      difficulty: 'Media',
-      points: 15,
-      completed: false,
-    },
-    {
-      id: 3,
-      name: 'Plancha',
-      description: '1 minuto',
-      difficulty: 'Difícil',
-      points: 20,
-      completed: false,
-    },
-  ];
+  const [selectedExercises, setSelectedExercises] = useState<Exercise[]>(exercises);
+  const toast = useToast();
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
-  const cardBg = useColorModeValue('white', 'gray.700');
+  const handleComplete = (exerciseId: string) => {
+    setSelectedExercises(prev =>
+      prev.map(ex =>
+        ex.id === exerciseId ? { ...ex, completed: true } : ex
+      )
+    );
+    toast({
+      title: '¡Ejercicio completado!',
+      description: 'Has ganado puntos por completar este ejercicio.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   return (
-    <Container maxW="container.xl" py={10}>
-      <VStack spacing={8} align="stretch">
+    <Container maxW="container.xl" py={8}>
+      <VStack gap={8} align="stretch">
         <Box>
-          <Heading as="h1" size="xl" mb={2}>
-            Tus Ejercicios
-          </Heading>
-          <Text color="gray.500">
-            Completa estos ejercicios para ganar puntos y subir de nivel
+          <Heading size="lg" mb={4}>Ejercicios Disponibles</Heading>
+          <Text color="gray.600">
+            Completa ejercicios para ganar puntos y mejorar tu rendimiento en el juego.
           </Text>
         </Box>
 
-        <Box>
-          <Heading size="md" mb={4}>
-            Progreso Diario
-          </Heading>
-          <Progress value={30} size="sm" colorScheme="green" mb={4} />
-          <Text fontSize="sm" color="gray.500">
-            3 de 10 ejercicios completados
-          </Text>
-        </Box>
-
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {exercises.map((exercise) => (
-            <Card key={exercise.id} bg={cardBg}>
-              <CardHeader>
-                <Heading size="md">{exercise.name}</Heading>
-                <Badge
-                  colorScheme={
-                    exercise.difficulty === 'Fácil'
-                      ? 'green'
-                      : exercise.difficulty === 'Media'
-                      ? 'yellow'
-                      : 'red'
-                  }
-                  mt={2}
-                >
-                  {exercise.difficulty}
-                </Badge>
-              </CardHeader>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
+          {selectedExercises.map((exercise) => (
+            <Card
+              key={exercise.id}
+              bg={bgColor}
+              borderWidth="1px"
+              borderColor={borderColor}
+              borderRadius="lg"
+              overflow="hidden"
+              transition="transform 0.2s"
+              _hover={{ transform: 'scale(1.02)' }}
+            >
+              {exercise.imageUrl && (
+                <Image
+                  src={exercise.imageUrl}
+                  alt={exercise.name}
+                  height="200px"
+                  width="100%"
+                  objectFit="cover"
+                />
+              )}
               <CardBody>
-                <VStack align="stretch" spacing={4}>
+                <VStack gap={3} align="start">
+                  <HStack justify="space-between" width="100%">
+                    <Heading size="md">{exercise.name}</Heading>
+                    <Badge
+                      colorScheme={
+                        exercise.difficulty === 'Fácil'
+                          ? 'green'
+                          : exercise.difficulty === 'Media'
+                          ? 'yellow'
+                          : 'red'
+                      }
+                    >
+                      {exercise.difficulty}
+                    </Badge>
+                  </HStack>
                   <Text>{exercise.description}</Text>
-                  <Text fontSize="sm" color="blue.500">
-                    +{exercise.points} puntos
-                  </Text>
-                  <Button
-                    colorScheme="blue"
-                    variant={exercise.completed ? 'outline' : 'solid'}
-                    isDisabled={exercise.completed}
-                  >
-                    {exercise.completed ? 'Completado' : 'Comenzar'}
-                  </Button>
+                  <HStack width="100%" justify="space-between">
+                    <Text fontSize="sm" color="gray.500">
+                      Duración: {exercise.duration} min
+                    </Text>
+                    <Text fontSize="sm" color="gray.500">
+                      Calorías: {exercise.calories}
+                    </Text>
+                  </HStack>
+                  <Progress
+                    value={exercise.completed ? 100 : 0}
+                    size="sm"
+                    width="100%"
+                    colorScheme="green"
+                  />
                 </VStack>
               </CardBody>
+              <Divider />
+              <CardFooter>
+                <Button
+                  width="100%"
+                  colorScheme="blue"
+                  disabled={exercise.completed}
+                  onClick={() => handleComplete(exercise.id)}
+                >
+                  {exercise.completed ? 'Completado' : 'Completar Ejercicio'}
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </SimpleGrid>

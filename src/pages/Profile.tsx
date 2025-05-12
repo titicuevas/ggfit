@@ -1,108 +1,131 @@
 import { useState } from 'react';
 import {
   Box,
+  Button,
   Container,
   Heading,
-  Text,
-  Button,
-  VStack,
   Input,
-  FormControl,
-  FormLabel,
-  useToast,
-  Card,
-  CardBody,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  SimpleGrid
+  SimpleGrid,
+  VStack,
+  Text,
+  Spinner,
 } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/toast';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
+import { Stat, StatLabel, StatNumber, StatHelpText } from '@chakra-ui/stat';
+import { getSummonerByName, getMatchHistory, getMatchDetails } from '../services/riotApi';
+import type { Summoner, Match } from '../types/riot';
 
 const Profile = () => {
   const [summonerName, setSummonerName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [summonerData, setSummonerData] = useState<Summoner | null>(null);
+  const [matches, setMatches] = useState<Match[]>([]);
   const toast = useToast();
 
-  const handleConnect = () => {
-    // Aquí irá la lógica para conectar con la API de Riot
-    toast({
-      title: 'Conexión exitosa',
-      description: 'Tu cuenta ha sido conectada correctamente',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
+  const handleConnect = async () => {
+    if (!summonerName.trim()) {
+      toast({
+        title: 'Error',
+        description: 'Por favor ingresa un nombre de invocador',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const summoner = await getSummonerByName(summonerName);
+      setSummonerData(summoner);
+
+      const matchIds = await getMatchHistory(summoner.puuid);
+      const matchDetails = await Promise.all(
+        matchIds.map(id => getMatchDetails(id))
+      );
+      setMatches(matchDetails);
+
+      toast({
+        title: 'Conexión exitosa',
+        description: `Bienvenido ${summoner.name}`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error('Error al conectar con la API:', error);
+      toast({
+        title: 'Error',
+        description: 'No se pudo conectar con la API de Riot Games',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container maxW="container.xl" py={10}>
-      <VStack spacing={8} align="stretch">
-        <Heading as="h1" size="xl" textAlign="center">
-          Tu Perfil
-        </Heading>
+    <Container maxW="container.xl" py={8}>
+      <VStack gap={8} align="stretch">
+        <Box>
+          <Heading mb={4}>Perfil de Invocador</Heading>
+          <FormControl>
+            <FormLabel>Nombre de Invocador</FormLabel>
+            <Input
+              value={summonerName}
+              onChange={(e) => setSummonerName(e.target.value)}
+              placeholder="Ingresa tu nombre de invocador"
+            />
+          </FormControl>
+          <Button
+            mt={4}
+            colorScheme="blue"
+            onClick={handleConnect}
+            loading={loading}
+            loadingText="Conectando..."
+            disabled={!summonerName.trim() || loading}
+          >
+            Conectar Cuenta
+          </Button>
+        </Box>
 
-        <Card>
-          <CardBody>
-            <VStack spacing={6}>
-              <FormControl>
-                <FormLabel>Nombre de Invocador</FormLabel>
-                <Input
-                  placeholder="Ingresa tu nombre de invocador"
-                  value={summonerName}
-                  onChange={(e) => setSummonerName(e.target.value)}
-                />
-              </FormControl>
-              <Button
-                colorScheme="blue"
-                onClick={handleConnect}
-                isDisabled={!summonerName}
-              >
-                Conectar Cuenta
-              </Button>
-            </VStack>
-          </CardBody>
-        </Card>
-
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-          <Card>
-            <CardBody>
+        {summonerData && (
+          <Box>
+            <Heading size="md" mb={4}>Estadísticas</Heading>
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
               <Stat>
                 <StatLabel>Nivel Actual</StatLabel>
-                <StatNumber>1</StatNumber>
-                <StatHelpText>¡Sigue ejercitándote!</StatHelpText>
+                <StatNumber>{summonerData.summonerLevel}</StatNumber>
+                <StatHelpText>Nivel de Invocador</StatHelpText>
               </Stat>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody>
               <Stat>
                 <StatLabel>Ejercicios Completados</StatLabel>
-                <StatNumber>0</StatNumber>
-                <StatHelpText>Este mes</StatHelpText>
+                <StatNumber>{matches.length}</StatNumber>
+                <StatHelpText>Partidas Registradas</StatHelpText>
               </Stat>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody>
               <Stat>
                 <StatLabel>Puntos Totales</StatLabel>
-                <StatNumber>0</StatNumber>
-                <StatHelpText>Acumulados</StatHelpText>
+                <StatNumber>
+                  {matches.reduce((total, match) => {
+                    const participant = match.info.participants.find(p => p.puuid === summonerData.puuid);
+                    return total + (participant ? participant.kills + participant.assists : 0);
+                  }, 0)}
+                </StatNumber>
+                <StatHelpText>Kills + Asistencias</StatHelpText>
               </Stat>
-            </CardBody>
-          </Card>
-        </SimpleGrid>
+            </SimpleGrid>
+          </Box>
+        )}
 
-        <Card>
-          <CardBody>
-            <Heading size="md" mb={4}>
-              Historial de Ejercicios
-            </Heading>
-            <Text>No hay ejercicios registrados aún.</Text>
-          </CardBody>
-        </Card>
+        {loading && (
+          <Box textAlign="center" py={8}>
+            <Spinner size="xl" />
+            <Text mt={4}>Cargando datos...</Text>
+          </Box>
+        )}
       </VStack>
     </Container>
   );

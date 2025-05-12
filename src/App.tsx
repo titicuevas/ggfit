@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+
+import theme from './theme';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Componentes
@@ -13,7 +15,7 @@ import Exercises from './pages/Exercises';
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Router>
         <div className="app">
           <Navbar />
