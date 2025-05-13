@@ -1,16 +1,15 @@
 import {
-  Container,
   Heading,
   Box,
-} from '@chakra-ui/react';
-import {
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-} from '@chakra-ui/table';
+  TableContainer,
+} from '@chakra-ui/react';
+import '../global.css';
 
 const Leaderboard = () => {
   // Datos de ejemplo
@@ -21,31 +20,42 @@ const Leaderboard = () => {
   ];
 
   return (
-    <Container maxW="container.xl" py={8}>
-      <Box>
-        <Heading mb={6}>Tabla de Clasificación</Heading>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Posición</Th>
-              <Th>Invocador</Th>
-              <Th isNumeric>Puntos</Th>
-              <Th isNumeric>Nivel</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {leaderboardData.map((player) => (
-              <Tr key={player.rank}>
-                <Td>{player.rank}</Td>
-                <Td>{player.name}</Td>
-                <Td isNumeric>{player.points}</Td>
-                <Td isNumeric>{player.level}</Td>
+    <main className="main-centered">
+      <Box
+        className="card-centered"
+        bgGradient="linear(to-r, brand.50, blue.100)"
+        borderRadius="2xl"
+        boxShadow="lg"
+        p={{ base: 4, md: 8 }}
+        mt={4}
+      >
+        <Heading mb={8} textAlign="center" color="brand.600">
+          Tabla de Clasificación
+        </Heading>
+        <TableContainer>
+          <Table variant="simple" bg="white" borderRadius="lg" boxShadow="md" overflow="hidden">
+            <Thead>
+              <Tr>
+                <Th color="brand.600">Posición</Th>
+                <Th color="brand.600">Invocador</Th>
+                <Th isNumeric color="brand.600">Puntos</Th>
+                <Th isNumeric color="brand.600">Nivel</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {leaderboardData.map((player) => (
+                <Tr key={player.rank} _hover={{ bg: 'brand.50' }}>
+                  <Td fontWeight="bold">{player.rank}</Td>
+                  <Td>{player.name}</Td>
+                  <Td isNumeric color="brand.500">{player.points}</Td>
+                  <Td isNumeric>{player.level}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
       </Box>
-    </Container>
+    </main>
   );
 };
 

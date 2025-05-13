@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-
 import theme from './theme';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,15 +16,13 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Router>
-        <div className="app">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/exercises" element={<Exercises />} />
-          </Routes>
-        </div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/exercises" element={<Exercises />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+        </Routes>
       </Router>
     </ChakraProvider>
   );

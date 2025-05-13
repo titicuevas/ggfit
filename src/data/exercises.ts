@@ -60,6 +60,66 @@ export const exercises: Exercise[] = [
     duration: 15,
     calories: 50,
     imageUrl: '/exercises/stretching.jpg'
+  },
+  {
+    id: '6',
+    name: 'Burpees',
+    description: 'Ejercicio completo para fuerza y cardio',
+    difficulty: 'Difícil',
+    points: 30,
+    completed: false,
+    type: 'Cardio',
+    duration: 10,
+    calories: 180,
+    imageUrl: '/exercises/burpees.jpg'
+  },
+  {
+    id: '7',
+    name: 'Zancadas',
+    description: 'Fortalece piernas y glúteos, mejora el equilibrio',
+    difficulty: 'Media',
+    points: 15,
+    completed: false,
+    type: 'Fuerza',
+    duration: 10,
+    calories: 90,
+    imageUrl: '/exercises/lunges.jpg'
+  },
+  {
+    id: '8',
+    name: 'Mountain Climbers',
+    description: 'Cardio intenso para abdomen y piernas',
+    difficulty: 'Difícil',
+    points: 20,
+    completed: false,
+    type: 'Cardio',
+    duration: 8,
+    calories: 120,
+    imageUrl: '/exercises/mountainclimbers.jpg'
+  },
+  {
+    id: '9',
+    name: 'Puente de glúteos',
+    description: 'Ejercicio para glúteos y core, fácil de hacer en casa',
+    difficulty: 'Fácil',
+    points: 10,
+    completed: false,
+    type: 'Fuerza',
+    duration: 8,
+    calories: 60,
+    imageUrl: '/exercises/glutebridge.jpg'
+  },
+  {
+    id: '10',
+    name: 'Jumping Jacks',
+    description: 'Cardio clásico para activar todo el cuerpo',
+    difficulty: 'Fácil',
+    points: 10,
+    completed: false,
+    type: 'Cardio',
+    duration: 7,
+    calories: 70,
+    imageUrl: '/exercises/jumpingjacks.jpg'
   }
 ];
 

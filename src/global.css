@@ -1,0 +1,29 @@
+body {
+  background: #f7fafc;
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+.main-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  padding-top: 40px;
+  box-sizing: border-box;
+}
+
+.card-centered {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .card-centered {
+    max-width: 98vw;
+  }
+} 
