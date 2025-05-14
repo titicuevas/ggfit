@@ -1,6 +1,47 @@
 # GGFit
 
-Aplicación fitness gamificada integrada con League of Legends y Supabase.
+![GGFit Logo](./public/ggfit.png)
+
+**Web en producción:**  
+👉 [https://ggfit-six.vercel.app/](https://ggfit-six.vercel.app/)
+
+---
+
+## ¿Qué es GGFit?
+
+GGFit es una aplicación web que gamifica el fitness usando tus partidas de League of Legends. Analiza tu rendimiento y te asigna ejercicios personalizados para mejorar tu salud mientras juegas.
+
+---
+
+## Logo
+
+El logo oficial de GGFit está disponible en el archivo `public/ggfit.png`.
+
+---
+
+## Uso de la API de Riot
+
+Para poder usar la API de Riot Games de forma legal y segura, debes cumplir estos pasos:
+
+1. **Solicitar una API Key en el portal de desarrolladores de Riot:**  
+   - Regístrate en [https://developer.riotgames.com/](https://developer.riotgames.com/)
+   - Crea una nueva aplicación y describe tu proyecto (por ejemplo: "Aplicación web de fitness gamificado que motiva a los jugadores de LoL a hacer ejercicio según su rendimiento en partidas").
+   - Acepta los términos de uso y la política de Riot.
+
+2. **Requisitos para producción:**  
+   - Si tu app va a ser pública, deberás solicitar una **API Key de producción** (la de desarrollo es temporal y limitada).
+   - Riot te pedirá información sobre tu proyecto, cómo usas los datos y cómo proteges la clave (por ejemplo, usando un backend proxy y nunca exponiéndola en el frontend).
+
+3. **Buenas prácticas:**  
+   - No expongas la API Key en el frontend.
+   - Usa variables de entorno y un backend para hacer las peticiones a Riot.
+   - Añade en tu README y en la web un aviso de que GGFit no está afiliado ni respaldado por Riot Games.
+
+---
+
+## Aviso legal para Riot
+
+> GGFit no está afiliado ni respaldado por Riot Games, Inc. League of Legends y todos los logotipos relacionados son marcas registradas de Riot Games, Inc.
 
 ## Recursos y dependencias principales
 
