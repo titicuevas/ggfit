@@ -83,27 +83,29 @@ const Profile = () => {
 
     return (
         <Flex direction="column" align="center" minH="100vh" width="100vw" bg={bgMain} justify="center">
-            <Container maxW="container.md" className="card-centered">
-                <VStack gap={8} align="center" width="100%">
+            <Container maxW="container.md" className="card-centered" p={{ base: 2, md: 0 }}>
+                <VStack gap={{ base: 4, md: 8 }} align="center" width="100%">
                     <Box width="100%">
-                        <Heading size="lg" mb={4} textAlign="center" color={textMain}>Perfil</Heading>
-                        <Text color={textSecondary} textAlign="center">
+                        <Heading size={{ base: 'lg', md: 'xl' }} mb={4} textAlign="center" color={textMain}>Perfil</Heading>
+                        <Text color={textSecondary} textAlign="center" fontSize={{ base: 'sm', md: 'md' }}>
                             Conecta tu cuenta de League of Legends para comenzar a ganar puntos
                         </Text>
                     </Box>
 
                     {!summonerData ? (
-                        <Card width="100%" bg={bgCard} borderColor={borderCard} borderWidth={1}>
+                        <Card width="100%" bg={bgCard} borderColor={borderCard} borderWidth={1} p={{ base: 2, md: 4 }}>
                             <CardBody>
                                 <VStack gap={4}>
                                     <Input
                                         placeholder="Nombre de invocador"
                                         value={summonerName}
                                         onChange={(e) => setSummonerName(e.target.value)}
+                                        fontSize={{ base: 'sm', md: 'md' }}
                                     />
                                     <Select
                                         value={region}
                                         onChange={(e) => setRegion(e.target.value)}
+                                        fontSize={{ base: 'sm', md: 'md' }}
                                     >
                                         <option value="euw">Europa Oeste (EUW)</option>
                                         <option value="na">Norte América (NA)</option>
@@ -116,6 +118,7 @@ const Profile = () => {
                                         onClick={handleConnect}
                                         isLoading={loading}
                                         disabled={!summonerName || loading}
+                                        fontSize={{ base: 'sm', md: 'md' }}
                                     >
                                         Conectar Cuenta
                                     </Button>
@@ -123,13 +126,13 @@ const Profile = () => {
                             </CardBody>
                         </Card>
                     ) : (
-                        <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} width="100%">
-                            <Card bg={bgCard} borderColor={borderCard} borderWidth={1}>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 4, md: 6 }} width="100%">
+                            <Card bg={bgCard} borderColor={borderCard} borderWidth={1} p={{ base: 2, md: 4 }}>
                                 <CardHeader>
-                                    <Heading size="md" color={textMain}>Información del Invocador</Heading>
+                                    <Heading size={{ base: 'md', md: 'lg' }} color={textMain}>Información del Invocador</Heading>
                                 </CardHeader>
                                 <CardBody>
-                                    <VStack align="start" gap={4}>
+                                    <VStack align="start" gap={4} fontSize={{ base: 'sm', md: 'md' }}>
                                         <HStack justify="space-between" width="100%">
                                             <Text fontWeight="bold" color={textMain}>Nombre:</Text>
                                             <Text color={textMain}>{summonerData.name}</Text>
@@ -150,12 +153,12 @@ const Profile = () => {
                                 </CardBody>
                             </Card>
 
-                            <Card bg={bgCard} borderColor={borderCard} borderWidth={1}>
+                            <Card bg={bgCard} borderColor={borderCard} borderWidth={1} p={{ base: 2, md: 4 }}>
                                 <CardHeader>
-                                    <Heading size="md" color={textMain}>Últimas Partidas</Heading>
+                                    <Heading size={{ base: 'md', md: 'lg' }} color={textMain}>Últimas Partidas</Heading>
                                 </CardHeader>
                                 <CardBody>
-                                    <VStack align="start" gap={4}>
+                                    <VStack align="start" gap={4} fontSize={{ base: 'sm', md: 'md' }}>
                                         {matchHistory.slice(0, 5).map((match, index) => {
                                             const player = match.info.participants.find(p => p.summonerName === summonerData.name);
                                             if (!player) return null;
@@ -166,7 +169,7 @@ const Profile = () => {
                                                             <Image
                                                                 src={`https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/${player.championName}.png`}
                                                                 alt={player.championName}
-                                                                boxSize="30px"
+                                                                boxSize={{ base: '24px', md: '30px' }}
                                                                 borderRadius="md"
                                                             />
                                                             <Text color={textMain}>{player.championName}</Text>
@@ -175,11 +178,11 @@ const Profile = () => {
                                                             {player.win ? "Victoria" : "Derrota"}
                                                         </Badge>
                                                     </HStack>
-                                                    <HStack fontSize="sm" color={textSecondary} mt={1}>
+                                                    <HStack fontSize={{ base: 'xs', md: 'sm' }} color={textSecondary} mt={1}>
                                                         <Text color={textSecondary}>KDA: {player.kills}/{player.deaths}/{player.assists}</Text>
                                                         <Text color={textSecondary}>({getKDA(player.kills, player.deaths, player.assists)})</Text>
                                                     </HStack>
-                                                    <HStack fontSize="sm" color={textSecondary} mt={1}>
+                                                    <HStack fontSize={{ base: 'xs', md: 'sm' }} color={textSecondary} mt={1}>
                                                         <Text color={textSecondary}>CS: {player.totalMinionsKilled + (player.neutralMinionsKilled || 0)}</Text>
                                                         <Text color={textSecondary}>Vision: {player.visionScore}</Text>
                                                     </HStack>

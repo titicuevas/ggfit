@@ -39,13 +39,6 @@ const getTodayKey = () => {
   return today.toISOString().slice(0, 10); // YYYY-MM-DD
 };
 
-function shuffleArray(array: any[]) {
-  return array
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-}
-
 const Exercises = () => {
   const [selectedExercises, setSelectedExercises] = useState<Exercise[]>(exercises);
   const [allCompleted, setAllCompleted] = useState(false);
@@ -61,7 +54,6 @@ const Exercises = () => {
   const textSecondary = useColorModeValue('gray.600', 'gray.300');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const [loginMode, setLoginMode] = useState(false);
-  const [carouselExercises, setCarouselExercises] = useState<Exercise[]>([]);
   const alertText = useColorModeValue('gray.800', 'white');
   const alertBg = useColorModeValue('green.100', 'green.700');
   const alertInfoBg = useColorModeValue('blue.50', 'blue.900');
@@ -73,7 +65,7 @@ const Exercises = () => {
       setLoggedUser(storedUser);
       // Recuperar progreso y puntos desde Supabase
       (async () => {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('users')
           .select('total_points, completed_today, last_completed_date')
           .eq('username', storedUser)
@@ -111,10 +103,6 @@ const Exercises = () => {
       localStorage.setItem('completedExercises_' + todayKey, JSON.stringify(completedIds));
     }
   }, [selectedExercises, loggedUser]);
-
-  useEffect(() => {
-    setCarouselExercises(shuffleArray(exercises));
-  }, []);
 
   const handleComplete = async (exerciseId: string) => {
     // Buscar el ejercicio en el estado actual
@@ -221,7 +209,7 @@ const Exercises = () => {
   const handleLogin = async () => {
     if (!username) return;
     setRegisterLoading(true);
-    const { data: user, error } = await supabase.from('users').select('username').eq('username', username).single();
+    const { data: user } = await supabase.from('users').select('username').eq('username', username).single();
     setRegisterLoading(false);
     if (user) {
       toast({
@@ -257,11 +245,11 @@ const Exercises = () => {
 
   return (
     <Flex direction="column" align="center" minH="100vh" width="100vw" bg={bgMain} justify="center">
-      <Container maxW="container.xl" p={0}>
-        <VStack gap={8} align="center" width="100%">
+      <Container maxW="container.xl" p={{ base: 2, md: 0 }}>
+        <VStack gap={{ base: 4, md: 8 }} align="center" width="100%">
           <Box width="100%">
-            <Heading size="lg" mb={4} textAlign="center" color={textMain}>Ejercicios Disponibles</Heading>
-            <Text color={textSecondary} textAlign="center">
+            <Heading size={{ base: 'lg', md: 'xl' }} mb={4} textAlign="center" color={textMain}>Ejercicios Disponibles</Heading>
+            <Text color={textSecondary} textAlign="center" fontSize={{ base: 'sm', md: 'md' }}>
               Completa ejercicios para ganar puntos y mejorar tu rendimiento en el juego.
             </Text>
           </Box>
@@ -282,7 +270,7 @@ const Exercises = () => {
           {/* Banner de registro solo si no está logueado */}
           {!loggedUser && (
             <Box width="100%" maxW="1200px" mx="auto">
-              <Alert status="info" borderRadius="md" bg={alertInfoBg} color={alertText}>
+              <Alert status="info" borderRadius="md" bg={alertInfoBg} color={alertText} fontSize={{ base: 'sm', md: 'md' }}>
                 <AlertIcon />
                 <Box flex="1">
                   ¿Quieres competir en la clasificación global?&nbsp;
@@ -335,7 +323,7 @@ const Exercises = () => {
             </Alert>
           )}
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6} className="card-centered">
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 4, md: 6 }} className="card-centered">
             {selectedExercises.map((exercise) => (
               <Card
                 key={exercise.id}
@@ -346,13 +334,13 @@ const Exercises = () => {
                 overflow="hidden"
                 transition="transform 0.2s"
                 _hover={{ transform: 'scale(1.02)' }}
-                minH="420px"
+                minH={{ base: '320px', md: '420px' }}
               >
                 {exercise.imageUrl && (
                   <Image
                     src={exercise.imageUrl}
                     alt={exercise.name}
-                    height="200px"
+                    height={{ base: '120px', md: '200px' }}
                     width="100%"
                     objectFit="cover"
                   />
@@ -360,13 +348,13 @@ const Exercises = () => {
                 <CardBody>
                   <VStack align="start" gap={2}>
                     <HStack justify="space-between" width="100%">
-                      <Heading size="md" color={textMain}>{exercise.name}</Heading>
+                      <Heading size={{ base: 'sm', md: 'md' }} color={textMain}>{exercise.name}</Heading>
                       <Badge colorScheme={exercise.difficulty === 'Fácil' ? 'green' : exercise.difficulty === 'Media' ? 'yellow' : 'red'}>
                         {exercise.difficulty.toUpperCase()}
                       </Badge>
                     </HStack>
-                    <Text color={textSecondary}>{exercise.description}</Text>
-                    <HStack fontSize="sm" color={textSecondary}>
+                    <Text color={textSecondary} fontSize={{ base: 'sm', md: 'md' }}>{exercise.description}</Text>
+                    <HStack fontSize={{ base: 'xs', md: 'sm' }} color={textSecondary}>
                       <Text>Duración: {exercise.duration} min</Text>
                       <Text>Calorías: {exercise.calories}</Text>
                     </HStack>
@@ -387,6 +375,7 @@ const Exercises = () => {
                       boxShadow: 'none',
                       opacity: 1
                     }}
+                    fontSize={{ base: 'sm', md: 'md' }}
                   >
                     {exercise.completed ? 'Completado' : 'Completar'}
                   </Button>

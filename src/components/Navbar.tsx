@@ -18,23 +18,23 @@ const Navbar = () => {
       zIndex={10}
       boxShadow="sm"
     >
-      <Flex h={16} alignItems="center" justifyContent="space-between" maxW="container.xl" mx="auto">
+      <Flex h={{ base: 12, md: 16 }} alignItems="center" justifyContent="space-between" maxW="container.xl" mx="auto" px={{ base: 2, md: 0 }}>
         <Link to="/">
-          <Image src="/ggfit.png" alt="GGFit Logo" height="40px" width="40px" borderRadius="full" cursor="pointer" />
+          <Image src="/ggfit.png" alt="GGFit Logo" height={{ base: '32px', md: '40px' }} width={{ base: '32px', md: '40px' }} borderRadius="full" cursor="pointer" />
         </Link>
 
-        <HStack gap={4} alignItems="center">
+        <HStack gap={{ base: 1, md: 4 }} alignItems="center" overflowX={{ base: 'auto', md: 'visible' }}>
           <Link to="/">
-            <Button variant="ghost" colorScheme="brand">Inicio</Button>
+            <Button variant="ghost" colorScheme="brand" size={{ base: 'sm', md: 'md' }}>Inicio</Button>
           </Link>
           <Link to="/profile">
-            <Button variant="ghost" colorScheme="brand">Perfil</Button>
+            <Button variant="ghost" colorScheme="brand" size={{ base: 'sm', md: 'md' }}>Perfil</Button>
           </Link>
           <Link to="/exercises">
-            <Button variant="ghost" colorScheme="brand">Ejercicios</Button>
+            <Button variant="ghost" colorScheme="brand" size={{ base: 'sm', md: 'md' }}>Ejercicios</Button>
           </Link>
           <Link to="/leaderboard">
-            <Button variant="ghost" colorScheme="brand">Clasificación</Button>
+            <Button variant="ghost" colorScheme="brand" size={{ base: 'sm', md: 'md' }}>Clasificación</Button>
           </Link>
           <IconButton
             aria-label="Cambiar modo de color"
@@ -42,6 +42,7 @@ const Navbar = () => {
             onClick={toggleColorMode}
             variant="ghost"
             fontSize="xl"
+            size={{ base: 'sm', md: 'md' }}
           />
         </HStack>
       </Flex>

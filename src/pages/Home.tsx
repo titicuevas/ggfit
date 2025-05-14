@@ -50,23 +50,23 @@ const Home = () => {
 
   return (
     <Flex direction="column" align="center" minH="100vh" bg={bgMain} width="100vw" justify="center">
-      <Container maxW="container.xl" py={10} centerContent>
-        <VStack gap={12} align="center" width="100%">
-          <Box textAlign="center" py={8} width="100%">
-            <Heading as="h1" size="2xl" mb={4} color="brand.500">
+      <Container maxW="container.xl" py={{ base: 4, md: 10 }} px={{ base: 2, md: 0 }} centerContent>
+        <VStack gap={{ base: 6, md: 12 }} align="center" width="100%">
+          <Box textAlign="center" py={{ base: 4, md: 8 }} width="100%">
+            <Heading as="h1" fontSize={{ base: '2xl', md: '4xl' }} mb={4} color="brand.500">
               Bienvenido a GGFit
             </Heading>
-            <Text fontSize="xl" color={textSecondary} maxW="2xl" mx="auto">
+            <Text fontSize={{ base: 'md', md: 'xl' }} color={textSecondary} maxW="2xl" mx="auto">
               Convierte tus partidas de League of Legends en una experiencia fitness.
               Mejora tu juego mientras te mantienes en forma.
             </Text>
-            <Image src="/ggfit.png" alt="GGFit Logo" height="300px" mx="auto" my={6} borderRadius="full" />
+            <Image src="/ggfit.png" alt="GGFit Logo" height={{ base: '120px', md: '300px' }} mx="auto" my={6} borderRadius="full" />
           </Box>
 
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={8} width="100%">
-            <Flex direction="column" p={8} borderWidth={1} borderRadius="lg" bg={bgSection} boxShadow="md" _hover={{ boxShadow: 'lg', transform: 'translateY(-2px)' }} transition="all 0.2s">
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 4, md: 8 }} width="100%">
+            <Flex direction="column" p={{ base: 4, md: 8 }} borderWidth={1} borderRadius="lg" bg={bgSection} boxShadow="md" _hover={{ boxShadow: 'lg', transform: 'translateY(-2px)' }} transition="all 0.2s">
               <Heading size="md" color="brand.500" mb={4}>¿Cómo funciona?</Heading>
-              <Text color={textSecondary} mb={4}>
+              <Text color={textSecondary} mb={4} fontSize={{ base: 'sm', md: 'md' }}>
                 GGFit analiza tu rendimiento en League of Legends y te asigna ejercicios
                 basados en tu KDA. ¡Mejora tu juego mientras te mantienes en forma!
               </Text>
@@ -78,9 +78,9 @@ const Home = () => {
               </Link>
             </Flex>
 
-            <Flex direction="column" p={8} borderWidth={1} borderRadius="lg" bg={bgSection} boxShadow="md" _hover={{ boxShadow: 'lg', transform: 'translateY(-2px)' }} transition="all 0.2s">
+            <Flex direction="column" p={{ base: 4, md: 8 }} borderWidth={1} borderRadius="lg" bg={bgSection} boxShadow="md" _hover={{ boxShadow: 'lg', transform: 'translateY(-2px)' }} transition="all 0.2s">
               <Heading size="md" color="brand.500" mb={4}>Características</Heading>
-              <VStack align="start" spacing={3} mb={4}>
+              <VStack align="start" spacing={3} mb={4} fontSize={{ base: 'sm', md: 'md' }}>
                 <Text color={textSecondary}>• Conexión con tu cuenta de League of Legends</Text>
                 <Text color={textSecondary}>• Ejercicios personalizados según tu rendimiento</Text>
                 <Text color={textSecondary}>• Sistema de puntos y niveles</Text>
@@ -99,14 +99,14 @@ const Home = () => {
           <Center width="100%">
             <Box
               mt={10}
-              px={{ base: 2, md: 8 }}
-              py={10}
+              px={{ base: 0, md: 8 }}
+              py={{ base: 4, md: 10 }}
               borderRadius="2xl"
               bgGradient={bgGradient}
               boxShadow="lg"
               width="100%"
             >
-              <Heading size="lg" mb={6} color="brand.600" textAlign="center">
+              <Heading size="lg" mb={6} color="brand.600" textAlign="center" fontSize={{ base: 'lg', md: '2xl' }}>
                 Ejercicios Destacados
               </Heading>
               <Box maxW="1200px" mx="auto">
@@ -124,13 +124,13 @@ const Home = () => {
                         transition="all 0.2s"
                         borderWidth={1}
                         borderColor="brand.100"
-                        minH="340px"
+                        minH={{ base: '220px', md: '340px' }}
                       >
                         {exercise.imageUrl && (
                           <Image
                             src={exercise.imageUrl}
                             alt={exercise.name}
-                            height="160px"
+                            height={{ base: '90px', md: '160px' }}
                             width="100%"
                             objectFit="cover"
                             borderTopRadius="xl"
@@ -138,7 +138,7 @@ const Home = () => {
                         )}
                         <VStack align="start" p={5} gap={2} flex={1}>
                           <HStack justify="space-between" width="100%">
-                            <Heading size="md" color="brand.600">{exercise.name}</Heading>
+                            <Heading size="md" color="brand.600" fontSize={{ base: 'md', md: 'lg' }}>{exercise.name}</Heading>
                             <Badge
                               colorScheme={
                                 exercise.difficulty === 'Fácil'
@@ -151,12 +151,12 @@ const Home = () => {
                               {exercise.difficulty}
                             </Badge>
                           </HStack>
-                          <Text color={textSecondary}>{exercise.description}</Text>
+                          <Text color={textSecondary} fontSize={{ base: 'sm', md: 'md' }}>{exercise.description}</Text>
                           <HStack width="100%" justify="space-between">
-                            <Text fontSize="sm" color="gray.500">
+                            <Text fontSize="xs" color="gray.500">
                               Duración: {exercise.duration} min
                             </Text>
-                            <Text fontSize="sm" color="gray.500">
+                            <Text fontSize="xs" color="gray.500">
                               Calorías: {exercise.calories}
                             </Text>
                           </HStack>
