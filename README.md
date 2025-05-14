@@ -1,54 +1,34 @@
-# GGFit - Gamers Get Fit
+# GGFit
 
-GGFit es una aplicación web que combina el gaming con el ejercicio físico, específicamente diseñada para jugadores de League of Legends. La aplicación motiva a los jugadores a mantenerse en forma mientras juegan, convirtiendo las derrotas en oportunidades para mejorar su salud física.
+Aplicación fitness gamificada integrada con League of Legends y Supabase.
 
-## Características
+## Recursos y dependencias principales
 
-- Integración con la API de Riot Games
-- Sistema de ejercicios personalizados basado en el rendimiento en el juego
-- Sistema de niveles y puntuación
-- Clasificación de usuarios
-- Perfiles personalizados
-- Seguimiento de progreso
+- **Supabase**: Backend como servicio para autenticación, base de datos y almacenamiento en la nube. [https://supabase.com/](https://supabase.com/)
+- **Chakra UI**: Librería de componentes de UI para React. [https://chakra-ui.com/](https://chakra-ui.com/)
+- **react-slick**: Carrusel responsivo para React. [https://react-slick.neostack.com/](https://react-slick.neostack.com/)
+- **slick-carousel**: Estilos CSS para react-slick. [https://kenwheeler.github.io/slick/](https://kenwheeler.github.io/slick/)
+- **@types/react-slick**: Tipos de TypeScript para react-slick.
 
-## Tecnologías Utilizadas
+## Instalación de dependencias
 
-- React + TypeScript
-- Supabase (Backend y Base de datos)
-- Chakra UI + Bootstrap
-- React Router
-- API de Riot Games
-
-## Instalación
-
-1. Clona el repositorio
 ```bash
-git clone https://github.com/tu-usuario/ggfit.git
+npm install @chakra-ui/react @emotion/react @emotion/styled framer-motion
+npm install @supabase/supabase-js
+npm install react-slick slick-carousel
+npm install --save-dev @types/react-slick
 ```
 
-2. Instala las dependencias
-```bash
-cd ggfit
-npm install
-```
+## Estructura principal
+- **/src/pages/Home.tsx**: Pantalla de inicio, incluye carrusel de ejercicios destacados.
+- **/src/pages/Exercises.tsx**: Ejercicios diarios, lógica de completado y puntos.
+- **/src/pages/Leaderboard.tsx**: Clasificación global de usuarios.
+- **/src/supabaseClient.ts**: Configuración de Supabase.
 
-3. Configura las variables de entorno
-Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
-```
-VITE_SUPABASE_URL=tu_url_de_supabase
-VITE_SUPABASE_ANON_KEY=tu_key_de_supabase
-VITE_RIOT_API_KEY=tu_key_de_riot
-```
+## Notas
+- Asegúrate de tener el archivo `riot.txt` en la carpeta `public` si usas la API de Riot.
+- Los GIFs de ejercicios deben estar en `public/ejercicios`.
 
-4. Inicia el servidor de desarrollo
-```bash
-npm run dev
-```
+---
 
-## Contribución
-
-Las contribuciones son bienvenidas. Por favor, lee las guías de contribución antes de enviar un pull request.
-
-## Licencia
-
-MIT
+Actualiza este README cada vez que añadas nuevas librerías o recursos importantes.

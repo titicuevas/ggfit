@@ -29,6 +29,12 @@ const theme = extendTheme({
         bg: 'gray.50',
         color: 'gray.800',
       },
+      html: {
+        bg: 'gray.50',
+      },
+      '#__chakra-ui-root': {
+        bg: 'gray.50',
+      },
     },
   },
   components: {

@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import {
-  Heading,
   Box,
   Table,
   Thead,
@@ -7,55 +7,105 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
+  Container,
+  useColorModeValue,
+  Flex
 } from '@chakra-ui/react';
-import '../global.css';
+import { supabase } from '../supabaseClient';
+import '../styles/leaderboard.css';
+
+interface LeaderboardUser {
+  username: string;
+  total_points: number;
+  rank?: number;
+}
 
 const Leaderboard = () => {
-  // Datos de ejemplo
-  const leaderboardData = [
-    { rank: 1, name: 'Invocador1', points: 1500, level: 30 },
-    { rank: 2, name: 'Invocador2', points: 1200, level: 28 },
-    { rank: 3, name: 'Invocador3', points: 1000, level: 25 },
-  ];
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
+  const bgMain = useColorModeValue('gray.50', 'gray.900');
+  const bgTable = useColorModeValue('white', 'gray.800');
+  const textMain = useColorModeValue('gray.800', 'white');
+  const textSecondary = useColorModeValue('gray.600', 'gray.300');
+  const thBg = useColorModeValue('gray.100', 'gray.700');
+  const thText = useColorModeValue('gray.600', 'gray.200');
+  const titleColor = useColorModeValue('black', 'white');
+  const subtitleColor = useColorModeValue('gray', 'white');
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('users')
+          .select('username, total_points')
+          .order('total_points', { ascending: false });
+
+        if (error) throw error;
+
+        // Añadir el ranking a cada usuario
+        const rankedUsers = data.map((user, index) => ({
+          ...user,
+          rank: index + 1
+        }));
+
+        setUsers(rankedUsers);
+      } catch (error) {
+        console.error('Error al cargar la clasificación:', error);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
 
   return (
-    <main className="main-centered">
-      <Box
-        className="card-centered"
-        bgGradient="linear(to-r, brand.50, blue.100)"
-        borderRadius="2xl"
-        boxShadow="lg"
-        p={{ base: 4, md: 8 }}
-        mt={4}
-      >
-        <Heading mb={8} textAlign="center" color="brand.600">
-          Tabla de Clasificación
-        </Heading>
-        <TableContainer>
-          <Table variant="simple" bg="white" borderRadius="lg" boxShadow="md" overflow="hidden">
-            <Thead>
+    <Flex direction="column" align="center" minH="100vh" width="100vw" bg={bgMain} justify="center">
+      <Container maxW="container.lg" p={0}>
+        <Box textAlign="center" mb={8} mt={8}>
+          <div className="leaderboard-title" style={{ color: titleColor, fontWeight: 800, fontSize: '2.2rem' }}><span role="img" aria-label="trofeo">🏆</span> Clasificación Global</div>
+          <div className="leaderboard-sub" style={{ color: subtitleColor, fontWeight: 600, fontSize: '1.1rem' }}>
+            ¡Compite con otros jugadores y alcanza la cima!
+          </div>
+        </Box>
+        <Box className="leaderboard-container" bg={bgTable}>
+          <Table className="leaderboard-table" variant="simple" size="md" color={textMain} width="100%">
+            <Thead bg={thBg}>
               <Tr>
-                <Th color="brand.600">Posición</Th>
-                <Th color="brand.600">Invocador</Th>
-                <Th isNumeric color="brand.600">Puntos</Th>
-                <Th isNumeric color="brand.600">Nivel</Th>
+                <Th className="leaderboard-pos" color={thText} bg={thBg}>POSICIÓN</Th>
+                <Th className="leaderboard-user" color={thText} bg={thBg}>USUARIO</Th>
+                <Th isNumeric className="leaderboard-points" color={thText} bg={thBg}>PUNTOS</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {leaderboardData.map((player) => (
-                <Tr key={player.rank} _hover={{ bg: 'brand.50' }}>
-                  <Td fontWeight="bold">{player.rank}</Td>
-                  <Td>{player.name}</Td>
-                  <Td isNumeric color="brand.500">{player.points}</Td>
-                  <Td isNumeric>{player.level}</Td>
+              {users.map((user) => (
+                <Tr key={user.username}>
+                  <Td className="leaderboard-pos">
+                    {user.rank === 1 && <span role="img" aria-label="oro">🥇</span>}
+                    {user.rank === 2 && <span role="img" aria-label="plata">🥈</span>}
+                    {user.rank === 3 && <span role="img" aria-label="bronce">🥉</span>}
+                    {user.rank && user.rank > 3 && <span>{user.rank}</span>}
+                  </Td>
+                  <Td className="leaderboard-user">
+                    {user.username}
+                    {user.rank && user.rank <= 3 && (
+                      <span style={{
+                        background: user.rank === 1 ? '#ffe066' : user.rank === 2 ? '#e9ecef' : '#ffd6a5',
+                        color: '#222',
+                        borderRadius: '6px',
+                        fontWeight: 'bold',
+                        fontSize: '0.9em',
+                        padding: '2px 10px',
+                        marginLeft: '6px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                      }}>TOP {user.rank}</span>
+                    )}
+                  </Td>
+                  <Td isNumeric className="leaderboard-points">{user.total_points}</Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
-        </TableContainer>
-      </Box>
-    </main>
+        </Box>
+      </Container>
+    </Flex>
   );
 };
 

@@ -1,8 +1,12 @@
-body {
-  background: #f7fafc;
+html, body, #__chakra-ui-root {
   margin: 0;
   font-family: 'Inter', Arial, sans-serif;
   overflow-x: hidden;
+  transition: background 0.3s;
+}
+
+.chakra-ui-dark, .chakra-ui-dark html, .chakra-ui-dark body, .chakra-ui-dark #__chakra-ui-root {
+  background: #1a202c !important; /* gray.900 */
 }
 
 .main-centered {

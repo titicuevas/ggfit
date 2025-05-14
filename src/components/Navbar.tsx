@@ -1,9 +1,11 @@
-import { Box, Flex, Button, Heading, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Button, HStack, useColorModeValue, Image, IconButton, useColorMode } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 const Navbar = () => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Box
@@ -18,12 +20,10 @@ const Navbar = () => {
     >
       <Flex h={16} alignItems="center" justifyContent="space-between" maxW="container.xl" mx="auto">
         <Link to="/">
-          <Heading size="md" cursor="pointer" color="brand.500">
-            GGFit
-          </Heading>
+          <Image src="/ggfit.png" alt="GGFit Logo" height="40px" width="40px" borderRadius="full" cursor="pointer" />
         </Link>
 
-        <HStack gap={4}>
+        <HStack gap={4} alignItems="center">
           <Link to="/">
             <Button variant="ghost" colorScheme="brand">Inicio</Button>
           </Link>
@@ -36,6 +36,13 @@ const Navbar = () => {
           <Link to="/leaderboard">
             <Button variant="ghost" colorScheme="brand">Clasificación</Button>
           </Link>
+          <IconButton
+            aria-label="Cambiar modo de color"
+            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            onClick={toggleColorMode}
+            variant="ghost"
+            fontSize="xl"
+          />
         </HStack>
       </Flex>
     </Box>
