@@ -45,7 +45,6 @@ const Home = () => {
   const bgMain = useColorModeValue('gray.50', 'gray.900');
   const bgSection = useColorModeValue('white', 'gray.800');
   const bgGradient = useColorModeValue('linear(to-r, brand.50, blue.100)', 'linear(to-r, gray.800, gray.700)');
-  const textMain = useColorModeValue('gray.800', 'white');
   const textSecondary = useColorModeValue('gray.600', 'gray.200');
 
   return (

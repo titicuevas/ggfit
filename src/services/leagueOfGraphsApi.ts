@@ -27,7 +27,12 @@ interface RiotMatch {
   };
 }
 
-const leagueOfGraphsApi = {
+interface LeagueOfGraphsApi {
+  getSummonerByName: (summonerName: string) => Promise<Summoner>;
+  getMatchHistory: (summonerName: string, region?: string) => Promise<Match[]>;
+}
+
+const leagueOfGraphsApi: LeagueOfGraphsApi = {
   getSummonerByName: async (summonerName: string): Promise<Summoner> => {
     try {
       const name = summonerName.split('#')[0];
@@ -57,33 +62,20 @@ const leagueOfGraphsApi = {
     }
   },
 
-  getMatchHistory: async (summonerName: string): Promise<Match[]> => {
-    try {
-      const summoner = await leagueOfGraphsApi.getSummonerByName(summonerName);
-      const response = await axios.get(`${BACKEND_URL}/api/match-history?puuid=${encodeURIComponent(summoner.puuid)}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching match history:', error);
-      throw error;
-    }
-  },
-
   getMatchHistory: async (summonerName: string, region: string = 'euw'): Promise<Match[]> => {
     try {
       const summoner = await leagueOfGraphsApi.getSummonerByName(summonerName);
       
-      const response = await axios.get(`${PROXY_URL}${RIOT_API_URL}/lol/match/v5/matches/by-puuid/${summoner.puuid}/ids?start=0&count=5`, {
+      const response = await axios.get(`${BACKEND_URL}/api/match-history?puuid=${summoner.puuid}`, {
         headers: {
-          'X-Riot-Token': API_KEY,
           'Origin': window.location.origin
         }
       });
 
       const matchDetails = await Promise.all(
         response.data.map(async (matchId: string) => {
-          const matchResponse = await axios.get(`${PROXY_URL}${RIOT_API_URL}/lol/match/v5/matches/${matchId}`, {
+          const matchResponse = await axios.get(`${BACKEND_URL}/api/match/${matchId}`, {
             headers: {
-              'X-Riot-Token': API_KEY,
               'Origin': window.location.origin
             }
           });
@@ -121,4 +113,4 @@ const leagueOfGraphsApi = {
   }
 };
 
-export default leagueOfGraphsApi; 
+export default leagueOfGraphsApi;
